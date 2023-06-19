@@ -14,7 +14,7 @@ const InputPassword = forwardRef<HTMLInputElement, InputPasswordProps>(
     return (
       <div className="form-control w-full">
         {label && (
-          <label className="label">
+          <label className="label mb-2 p-0">
             <span className="label-text">{label}</span>
           </label>
         )}

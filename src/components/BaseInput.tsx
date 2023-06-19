@@ -9,7 +9,7 @@ const BaseInput = forwardRef<
   return (
     <input
       ref={ref}
-      className={cn("input-bordered input w-full", className)}
+      className={cn("input w-full border-2 border-slate-400", className)}
       {...props}
     />
   );
