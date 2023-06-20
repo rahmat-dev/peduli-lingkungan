@@ -17,8 +17,8 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="h-[672px] w-full p-[100px]">
-        <div className="flex h-[472px] w-full">
+      <div className="w-full p-10 lg:p-20 xl:p-28">
+        <div className="flex w-full flex-col gap-6 md:flex-row">
           <div className="h-full flex-1 pr-4">
             <p className="mb-[20px] text-[40px] font-semibold leading-[45px]">
               Mulai langkah pertama dalam melestarikan{" "}
@@ -52,7 +52,7 @@ const Home = () => {
 
       <Sponsor />
 
-      <div className="p-[100px]">
+      <div className="p-10 lg:p-20 xl:p-28">
         <div>
           <h1 className="mb-4 text-[32px] font-semibold leading-[48px]">
             Pelestarian Flora Di Indonesia

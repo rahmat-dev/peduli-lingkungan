@@ -5,9 +5,9 @@ const logo = "/assets/logo/Icon.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-black px-[100px] pb-[30px] pt-[60px]">
-      <div className="flex items-start justify-between bg-black">
-        <div className="flex w-1/4 flex-col">
+    <footer className="bg-black p-10 lg:p-20 xl:p-28">
+      <div className="grid grid-cols-1 gap-10 bg-black md:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+        <div className="flex flex-col">
           {/* <img src={logo} alt="logo" className=" w-32 cursor-pointer lg:w-64" /> */}
 
           <div className="w-min">
@@ -19,7 +19,7 @@ const Footer = () => {
               <span>Lingkungan</span>
             </Link>
           </div>
-          <ul className="mt-4 flex gap-x-[12px]">
+          {/* <ul className="mt-4 flex gap-x-[12px]">
             <li className="icon">
               <a href=""></a>
             </li>
@@ -32,18 +32,26 @@ const Footer = () => {
             <li className="icon">
               <a href=""></a>
             </li>
-          </ul>
+          </ul> */}
         </div>
-        <div className="flex w-1/4 flex-col pl-20">
+        <div className="flex flex-col">
           <h2 className="mb-4 text-teal-400">ABOUT APP</h2>
           <ul className="font-light leading-[29px] text-white">
-            <li>Home</li>
-            <li>Donasi</li>
-            <li>Petisi</li>
-            <li>Artikel</li>
+            <li>
+              <Link href="/">Home</Link>
+            </li>
+            <li>
+              <Link href="/donation">Donasi</Link>
+            </li>
+            <li>
+              <Link href="/petition">Petisi</Link>
+            </li>
+            <li>
+              <Link href="/blog">Blog</Link>
+            </li>
           </ul>
         </div>
-        <div className="flex w-1/4 flex-col">
+        <div className="flex flex-col">
           <h2 className="mb-4 text-teal-400">CONTACT</h2>
           <ul className="font-light leading-[29px] text-white">
             <li>faunafoundation@gmail.id</li>
@@ -51,7 +59,7 @@ const Footer = () => {
             <li>Medan, Indonesia</li>
           </ul>
         </div>
-        <div className="flex w-1/4 flex-col">
+        <div className="flex flex-col">
           <h2 className="mb-4 text-teal-400">INFORMATION</h2>
           <ul className="font-light text-white">
             <li>

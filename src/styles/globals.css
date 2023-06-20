@@ -8,8 +8,7 @@
 }
 
 .swiper {
-  @apply w-full;
-  /* height: 456px; */
+  @apply h-min w-full;
 }
 
 .burger-line {
