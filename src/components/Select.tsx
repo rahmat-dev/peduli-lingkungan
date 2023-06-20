@@ -25,9 +25,11 @@ const Select = ({
         className={cn("select border-2 border-slate-400", className)}
         {...props}
       >
-        <option disabled value="">
-          {placeholder}
-        </option>
+        {placeholder && (
+          <option disabled value="">
+            {placeholder}
+          </option>
+        )}
         {options.map(({ label, value }) => (
           <option key={value} value={value}>
             {label}

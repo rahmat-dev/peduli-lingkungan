@@ -7,7 +7,10 @@ const Link = ({
   ...props
 }: React.AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps) => (
   <NextLink
-    className={cn("link-accent link no-underline", className)}
+    className={cn(
+      "link text-brand-500 no-underline hover:text-brand-300",
+      className
+    )}
     {...props}
   />
 );

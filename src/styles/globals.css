@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.nav-fix {
+  @apply fixed z-[9999] bg-black bg-opacity-70 backdrop-blur-sm;
+  box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.swiper {
+  @apply w-full;
+  /* height: 456px; */
+}
+
+.burger-line {
+  @apply my-2 block h-[2px] w-[30px] bg-white transition duration-300 ease-in-out;
+}
+
+.burger-active > span:nth-child(1) {
+  @apply rotate-45;
+}
+
+.burger-active > span:nth-child(2) {
+  @apply scale-0;
+}
+
+.burger-active > span:nth-child(3) {
+  @apply -rotate-45;
+}
+
+.text-default {
+  @apply text-[20px] leading-[30px];
+}
+
+.icon {
+  @apply h-14 w-14 rounded-2xl bg-teal-400;
+}
+
+.swiper-bold {
+  @apply text-[30px] leading-[36px];
+}
+
+.swiper-thin {
+  @apply text-[16px] leading-[24px];
+}

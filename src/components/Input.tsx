@@ -1,14 +1,17 @@
+import type { Icon } from "lucide-react";
 import { type InputHTMLAttributes, forwardRef } from "react";
 
 import BaseInput from "~/components/BaseInput";
+import { cn } from "~/utils/ui";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  LeftIcon?: Icon;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, ...props }, ref) => {
+  ({ label, error, LeftIcon, className, ...props }, ref) => {
     return (
       <div className="form-control w-full">
         {label && (
@@ -16,7 +19,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             <span className="label-text">{label}</span>
           </label>
         )}
-        <BaseInput ref={ref} {...props} />
+        <div className="relative">
+          {LeftIcon && <LeftIcon />}
+          <BaseInput
+            ref={ref}
+            className={cn({ "pl-14": LeftIcon }, className)}
+            {...props}
+          />
+        </div>
         {error && <span className="mt-2 text-sm text-red-500">{error}</span>}
       </div>
     );

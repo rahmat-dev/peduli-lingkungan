@@ -12,7 +12,8 @@ interface LayoutProps {
 }
 
 const Layout = ({
-  title = "Peduli Lingkungan",
+  // title = "Peduli Lingkungan",
+  title = "Green Impact",
   children,
   navbarClassName,
   navbarFixed,
