@@ -5,6 +5,7 @@ import { cn } from "~/utils/ui";
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   options: { label: string; value: string | number }[];
+  error?: string;
 }
 
 const Select = ({
@@ -12,6 +13,7 @@ const Select = ({
   className,
   options,
   placeholder,
+  error,
   ...props
 }: SelectProps) => {
   return (
@@ -23,13 +25,16 @@ const Select = ({
         className={cn("select border-2 border-slate-400", className)}
         {...props}
       >
-        <option>{placeholder}</option>
+        <option disabled value="">
+          {placeholder}
+        </option>
         {options.map(({ label, value }) => (
           <option key={value} value={value}>
             {label}
           </option>
         ))}
       </select>
+      {error && <span className="mt-2 text-sm text-red-500">{error}</span>}
     </div>
   );
 };

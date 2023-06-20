@@ -1,12 +1,13 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import type { Role } from "@prisma/client";
+import { compare } from "bcrypt";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
-import { env } from "~/env.mjs";
+import CredentialsProvider from "next-auth/providers/credentials";
+
 import { prisma } from "~/server/db";
 
 /**
@@ -20,14 +21,13 @@ declare module "next-auth" {
     user: {
       id: string;
       // ...other properties
-      // role: UserRole;
+      role: Role;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    role: Role;
+  }
 }
 
 /**
@@ -37,30 +37,72 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
+    session: ({ session, token }) => {
+      if (token) {
+        session.user.id = token.id as string;
+        session.user.name = token.name;
+        session.user.email = token.email;
+      }
+      return session;
+    },
+    jwt: async ({ token, user, trigger }) => {
+      if (trigger === "signIn") {
+        return { ...token, ...user };
+      }
+
+      const currentUser = await prisma.user.findFirst({
+        where: { id: token.sub },
+      });
+      if (!currentUser) {
+        return {};
+      }
+
+      const { id, name, email } = currentUser;
+      return { ...token, id, name, email };
+    },
+    redirect: ({ baseUrl }) => {
+      return baseUrl;
+    },
+  },
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const user = await prisma.user.findUnique({
+          where: { email: credentials?.email },
+        });
+        if (!user) {
+          throw new Error("Email atau password tidak valid");
+        }
+
+        const isMatch = await compare(
+          credentials?.password as string,
+          user.password
+        );
+        if (!isMatch) {
+          throw new Error("Email atau password tidak valid");
+        }
+
+        const { id, name, email, role } = user;
+
+        return { id, name, email, role };
       },
     }),
-  },
-  adapter: PrismaAdapter(prisma),
-  providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
   ],
+  pages: {
+    signIn: "/signin",
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+  },
+  jwt: {
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+  },
 };
 
 /**

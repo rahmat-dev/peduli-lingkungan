@@ -1,9 +1,10 @@
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 import Button from "~/components/Button";
 import { useWindowScroll } from "~/hooks/useWindowScroll";
-import { cn } from "~/utils/ui";
+import { cn, generateAvatarName } from "~/utils/ui";
 
 interface ILink {
   label: string;
@@ -16,6 +17,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ className, fixed }: NavbarProps) => {
+  const session = useSession();
   const router = useRouter();
   const [{ y }] = useWindowScroll();
 
@@ -74,9 +76,35 @@ const Navbar = ({ className, fixed }: NavbarProps) => {
               </li>
             ))}
           </ul>
-          <Button className="w-28" onClick={() => router.push("/signin")}>
-            Masuk
-          </Button>
+          {session.data?.user ? (
+            <div className="dropdown-end dropdown">
+              <div tabIndex={0} className="placeholder avatar cursor-pointer">
+                <div className={cn("w-12 rounded-full bg-gray-300 text-black")}>
+                  <span className="text-lg font-semibold uppercase">
+                    {generateAvatarName(session.data.user.name)}
+                  </span>
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className={cn(
+                  "dropdown-content menu mt-4 w-52 rounded-md bg-base-100 p-2 text-base-content shadow",
+                  { "mt-6": !fixed || y > 80 }
+                )}
+              >
+                <li>
+                  <Link href="/profile">Profil</Link>
+                </li>
+                <li>
+                  <a onClick={() => signOut()}>Keluar</a>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Button className="w-28" onClick={() => router.push("/signin")}>
+              Masuk
+            </Button>
+          )}
         </div>
       </div>
     </nav>

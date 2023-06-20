@@ -1,10 +1,34 @@
+import type { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { signIn } from "next-auth/react";
+import Router from "next/router";
 import { useState, type FormEvent } from "react";
+import { toast } from "react-toastify";
 
 import Button from "~/components/Button";
 import Input from "~/components/Input";
 import InputPassword from "~/components/InputPassword";
 import Layout from "~/components/Layout";
 import Link from "~/components/Link";
+import { env } from "~/env.mjs";
+import { getServerAuthSession } from "~/server/auth";
+
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  const session = await getServerAuthSession(ctx);
+  if (session) {
+    return {
+      redirect: {
+        destination: env.NEXT_PUBLIC_BASE_URL,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 interface IForm {
   email: string;
@@ -16,9 +40,22 @@ const SignIn = () => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignIn = (e: FormEvent) => {
+  const handleSignIn = async (e: FormEvent) => {
+    setIsLoading(true);
     e.preventDefault();
+    const resp = await signIn("credentials", {
+      email: form.email,
+      password: form.password,
+      redirect: false,
+    });
+    if (resp?.ok) {
+      await Router.push("/");
+    } else {
+      toast.error(resp?.error);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,8 +86,14 @@ const SignIn = () => {
                   Lupa Password?
                 </Link>
               </div>
-              <div className="card-actions items-center">
-                <Button className="w-full">Masuk</Button>
+              <div className="card-actions justify-center">
+                <Button
+                  className="w-full"
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                >
+                  Masuk
+                </Button>
                 <div className="text-base">
                   <span>Belum punya akun? </span>
                   <Link href="/signup">Daftar</Link>
