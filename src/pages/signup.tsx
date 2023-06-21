@@ -1,5 +1,5 @@
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useState, type FormEvent, useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -54,6 +54,7 @@ const SignUp = () => {
     subdistrict: "",
     area: "",
   });
+  const router = useRouter();
 
   const signUp = api.auth.signUp.useMutation({
     onError: (error) => {
@@ -63,7 +64,7 @@ const SignUp = () => {
     },
     onSuccess: async () => {
       toast.success("Registrasi Berhasil");
-      await Router.push("/signin");
+      await router.push("/signin");
     },
   });
   const getProvinces = api.region.getProvinces.useQuery(undefined, {

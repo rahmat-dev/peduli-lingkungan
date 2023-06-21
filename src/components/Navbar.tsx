@@ -141,7 +141,9 @@ const Navbar = ({ className, fixed }: NavbarProps) => {
                           <Link href="/profile">Profil</Link>
                         </li>
                         <li>
-                          <a onClick={() => signOut()}>Keluar</a>
+                          <a onClick={() => signOut({ callbackUrl: "/" })}>
+                            Keluar
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -202,7 +204,7 @@ const Navbar = ({ className, fixed }: NavbarProps) => {
                   <Link href="/profile">Profil</Link>
                 </li>
                 <li>
-                  <a onClick={() => signOut()}>Keluar</a>
+                  <a onClick={() => signOut({ callbackUrl: "/" })}>Keluar</a>
                 </li>
               </ul>
             </div>

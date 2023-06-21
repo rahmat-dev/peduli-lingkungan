@@ -27,6 +27,9 @@ export default {
       fontFamily: {
         sans: ["var(--font-poppins)", ...fontFamily.sans],
       },
+      height: {
+        inherit: "inherit",
+      },
     },
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],

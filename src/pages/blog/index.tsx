@@ -8,9 +8,9 @@ import Select from "~/components/Select";
 import Input from "~/components/Input";
 import { cn } from "~/utils/ui";
 
-const BlogCard = () => (
-  <div className="card card-compact bg-base-100 shadow-xl md:card-side">
-    <figure className="relative h-full w-full md:max-w-[360px]">
+export const BlogCard = ({ slug }: { slug: string }) => (
+  <div className="card-compact card bg-base-100 shadow-xl md:card-side">
+    <figure className="relative h-60 w-full md:h-inherit md:max-w-[360px]">
       <Image
         fill
         src="https://images.unsplash.com/photo-1488330890490-c291ecf62571?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
@@ -24,7 +24,7 @@ const BlogCard = () => (
         <div className="badge badge-secondary badge-lg text-xs">Kategori 2</div>
       </div>
       <div>
-        <Link href="/" className="card-title hover:underline">
+        <Link href={`/blog/${slug}`} className="card-title hover:underline">
           Dampak Penebangan Hutan Secara Liar
         </Link>
         <Link href="/" className="text-base text-brand-700">
@@ -66,7 +66,7 @@ const FilterBlog = ({
     <div
       tabIndex={asDropdown ? 0 : undefined}
       className={cn(
-        "card card-compact z-10 h-min bg-white shadow-md",
+        "card-compact card z-10 h-min bg-white shadow-md",
         {
           "dropdown-content mt-2 w-64": asDropdown,
         },
@@ -97,7 +97,7 @@ const FilterBlog = ({
 const Blog = () => {
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-6 md:py-10">
         <div className="mb-8">
           <h2 className="mb-2 text-4xl font-semibold">Blog</h2>
           <hr className="h-1 w-14 bg-base-content" />
@@ -112,7 +112,7 @@ const Blog = () => {
                   <Search className="absolute left-4 top-1/2 w-6 -translate-y-1/2" />
                 )}
               />
-              <div className="dropdown-end dropdown-bottom dropdown xl:hidden">
+              <div className="dropdown-bottom dropdown-end dropdown xl:hidden">
                 <label
                   tabIndex={0}
                   className="btn-square btn bg-white shadow-md"
@@ -125,7 +125,10 @@ const Blog = () => {
             {Array(5)
               .fill(null)
               .map((_, idx) => (
-                <BlogCard key={idx} />
+                <BlogCard
+                  key={idx}
+                  slug="dampak-penebangan-hutan-secara-liar"
+                />
               ))}
           </div>
         </div>

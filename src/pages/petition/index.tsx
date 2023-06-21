@@ -3,8 +3,8 @@ import Link from "next/link";
 
 import Layout from "~/components/Layout";
 
-const DonationCard = () => (
-  <div className="card card-compact bg-base-100 shadow-xl">
+export const PetitionCard = ({ slug }: { slug: string }) => (
+  <div className="card-compact card bg-base-100 shadow-xl">
     <figure className="relative h-60 w-full">
       <Image
         fill
@@ -15,8 +15,8 @@ const DonationCard = () => (
     </figure>
     <div className="card-body gap-6">
       <div>
-        <Link href="/" className="card-title hover:underline">
-          1.000 Pohon untuk Indonesia
+        <Link href={`/petition/${slug}`} className="card-title hover:underline">
+          Tolak Pembangunan PT ABCD
         </Link>
         <Link href="/" className="text-base text-brand-700">
           Komunitas Pecinta Hutan
@@ -28,26 +28,26 @@ const DonationCard = () => (
           value={500}
           max={1000}
         ></progress>
-        <p>500 / 1.000 Terkumpul</p>
+        <p className="text-sm">50.000 / 100.000 Menandatangani</p>
       </div>
-      <p className="text-gray-500">Berakhir pada 20/06/2023</p>
+      <p className="text-gray-500">Dimulai pada 20/06/2023</p>
     </div>
   </div>
 );
 
-const Donation = () => {
+const Petition = () => {
   return (
-    <Layout>
-      <div className="container mx-auto px-4 py-6">
+    <Layout title="Peduli Lingkungan - Petisi">
+      <div className="container mx-auto px-4 py-6 md:py-10">
         <div className="mb-8">
-          <h2 className="mb-2 text-4xl font-semibold">Donasi</h2>
-          <hr className="h-1 w-24 bg-base-content" />
+          <h2 className="mb-2 text-4xl font-semibold">Petisi</h2>
+          <hr className="h-1 w-16 bg-base-content" />
         </div>
         <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {Array(5)
             .fill(null)
             .map((_, idx) => (
-              <DonationCard key={idx} />
+              <PetitionCard key={idx} slug="tolak-pembangunan-pt-abcd" />
             ))}
         </div>
       </div>
@@ -55,4 +55,4 @@ const Donation = () => {
   );
 };
 
-export default Donation;
+export default Petition;

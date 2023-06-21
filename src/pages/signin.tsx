@@ -1,6 +1,6 @@
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { signIn } from "next-auth/react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useState, type FormEvent } from "react";
 import { toast } from "react-toastify";
 
@@ -41,6 +41,7 @@ const SignIn = () => {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSignIn = async (e: FormEvent) => {
     setIsLoading(true);
@@ -50,11 +51,15 @@ const SignIn = () => {
       password: form.password,
       redirect: false,
     });
-    if (resp?.ok) {
-      await Router.push("/");
-    } else {
+    if (!resp?.ok) {
       toast.error(resp?.error);
       setIsLoading(false);
+    } else {
+      if (router.query.callbackUrl) {
+        window.location.href = router.query.callbackUrl as string;
+      } else {
+        await router.push("/");
+      }
     }
   };
 
